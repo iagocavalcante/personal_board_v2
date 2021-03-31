@@ -1,0 +1,127 @@
+<div class="container" >
+  <div id="board-header">
+    <div phx-click="show_boards" phx-value-should_show="<%= not @show_boards %>">
+      <span>Boards</span>
+    </div>
+  </div>
+  <div class="board-wrapper">
+    <%= if @show_boards == true do %>
+      <div class="boards" >
+        <%= for %{id: id, title: title} <- @boards do %>
+          <div class="board" phx-click="set_current_board" phx-value-board_id="<%= id %>">
+            <%= title %>
+          </div>
+        <% end %>
+        <%= if @show_board_composer == true do %>
+          <div class="board-composer">
+            <%= form_for :board, "#", [phx_submit: :add_board], fn f -> %>
+            <%= text_input f, :title, id: "new-list-name", class: "list-name-input", autofocus: true %>
+            <%= submit "Add Board", class: "primary" %>
+            <span class="close-icon icons" phx-click="show_board_composer" phx-value-should_show="false">
+              <i class="material-icons icons">close</i>
+            </span>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="divider"></div>
+        <div class="board" phx-click="show_board_composer" phx-value-should_show="true">
+          Add Board
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<div class="board-header-wrapper-name">
+  <h1><%= @current_board.title %></h1>
+</div>
+<div class="lists" phx-hook="Lists"  id="lists" >
+  <%= for list <- @lists do %>
+    <div  class="list-wrapper" id="<%= list.id %>" data-position="<%= list.position %>" phx-hook="List">
+      <div class="list">
+        <div class="list-header" id="<%= list.id %>"  phx-hook="ListTitle" >
+          <input style="display:<%= if @edit_list_title == list.id, do: "block", else: "none" %>" autofocus
+                 name="list-title"  phx-hook="ListTitle" value="<%= list.title %>" data-list_id="<%= list.id %>" id="<%= list.id %>"></input>
+        <h2 phx-click="edit_list_title" phx-value-list_id="<%= list.id %>" style="display: <%= if @edit_list_title  == list.id, do: "none", else: "block" %>"><%= list.title %></h2>
+        <div class="more-list-actions icons" >
+          <i class="material-icons ">more_horiz</i>
+        </div>
+      </div>
+      <% dom_id = "list" <> Integer.to_string(list.id) %>
+      <% sorted_cards = Enum.sort(list.cards,  &(&1.position <= &2.position)) %>
+      <div class="list-cards" id="<%= dom_id %>" data-list-id="<%= list.id %>" >
+        <%= for card <- sorted_cards do %>
+          <%= live_component(
+              @socket,
+              PersonalBoardV2Web.CardComponent,
+              card: card,
+              edit_card_title: @edit_card_title,
+              list_id: list.id
+            )
+          %>
+        <% end %>
+      </div>
+      <%= if @show_card_composer == list.id do %>
+        <div class="card-composer">
+          <%= form_for :card, "#", [phx_submit: :add_card], fn f -> %>
+          <%= text_input f, :title, id: "new-list-name", class: "list-name-input", autofocus: true %>
+          <%= hidden_input f, :list_id, value: list.id  %>
+          <%= submit "Add Card", class: "primary" %>
+          <div class="close-icon icons" phx-click="show_card_composer" phx-value-list_id="0">
+            <i class="material-icons ">close</i>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <a href="#" class="open-card-composer" phx-click="show_card_composer" phx-value-list_id="<%= list.id %>" >
+        <i class="material-icons tiny">add</i>
+        <div class="add-text">Add a card </div>
+      </a>
+    <% end %>
+  </div>
+</div>
+<% end %>
+<%= if @show_list_composer == true do %>
+  <div class="list-wrapper" id="0">
+    <div class="list">
+      <div class="card-composer">
+        <%= form_for :list, "#", [phx_submit: :add_list], fn f -> %>
+        <%= text_input f, :title, id: "new-list-name", class: "list-name-input", autofocus: true %>
+        <%= hidden_input f, :board_id, value: @current_board.id  %>
+        <%= submit "Add List", class: "primary" %>
+        <span class="close-icon icons" phx-click="show_list_composer" phx-value-should_show="false">
+          <i class="material-icons icons">close</i>
+        </span>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% else %>
+  <div class="list-wrapper mod-add">
+    <div class="show-list-composer" phx-click="show_list_composer" phx-value-should_show="true" >
+      <i class="material-icons">add</i>
+      <span class="add-list-text" > Add a list</span>
+    </div>
+  </div>
+<% end %>
+</div>
+</div>
+<%= if @show_list_actions == true do %>
+<div id="list-actions" style="top: <%= @list_actions_y %>px; left: <%= @list_actions_x %>px;">
+  <div id="list-actions-header">
+    <span style="width: 28px;"> </span>
+    <span>List Actions</span>
+    <span class="icons" phx-click="show_list_actions" phx-value-should_show="false">
+      <i class="material-icons">close</i>
+    </span>
+  </div>
+  <div id="list-actions-body" >
+    <div class="divider" ></div>
+    <div class="list-actions-item" phx-click="show_card_composer" phx-value-list_id="<%= @list_actions_list_id %>" >Add Card...</div>
+    <div class="list-actions-item" phx-click="move_list">Move List</div>
+    <div class="divider" ></div>
+    <div class="list-actions-item" phx-click="archive_list" phx-value-list_id="<%= @list_actions_list_id %>" >Archive List</div>
+  </div>
+</div>
+<% end %>
+</div>
+</div>

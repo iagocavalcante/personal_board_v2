@@ -1,0 +1,14 @@
+
+<% dom_id = "list" <> Integer.to_string(@list_id) %>
+<% sorted_cards = Enum.sort(@cards,  &(&1.position <= &2.position)) %>
+<div class="list-cards" id="<%= dom_id %>" data-list-id="<%= @list_id %>" >
+  <%= for card <- sorted_cards do %>
+    <%= live_component(
+          @socket,
+          PersonalBoardV2Web.CardComponent,
+          card: card,
+          edit_card_title: @edit_card_title
+        )
+    %>
+  <% end %>
+</div>
