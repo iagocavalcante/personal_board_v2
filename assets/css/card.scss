@@ -1,0 +1,19 @@
+
+.card {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  margin-top: 20px;
+  padding: 15px;
+  min-height: 50px;
+}
+
+.card:last-child {
+  margin-bottom: 15px;
+}
+
+.options-card {
+  float: right;
+  font-size: 20px !important;
+  color: #9F9F9F;
+}
