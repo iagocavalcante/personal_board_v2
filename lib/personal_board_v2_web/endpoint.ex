@@ -11,7 +11,7 @@ defmodule PersonalBoardV2Web.Endpoint do
   ]
 
   socket "/socket", PersonalBoardV2Web.UserSocket,
-    websocket: true,
+    websocket: [timeout: 45_000],
     longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
