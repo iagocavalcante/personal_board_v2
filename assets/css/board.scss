@@ -1,0 +1,119 @@
+.board--header {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  height: 83px;
+  width: 100%;
+  padding-top: 3px;
+  border-bottom: 1px solid #eaeaea;
+  flex: 3;
+
+  .border--header__search {
+    flex: 0.7;
+    &--icon {
+      height: 20px;
+      margin-left: 30px;
+      margin-right: 10px;
+      path {
+        margin-top: 10px;
+      }
+    }
+
+    &--input {
+      border: none;
+      border-bottom: 1px solid #5a5a5a;
+      height: 30px;
+      font-size: 16px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  
+  .border--header__invited {
+    display: flex;
+    align-items: center;
+    flex: 0.65;
+    height: 100%;
+    border-right: 1px solid #eaeaea;
+  }
+  
+  .border--header__notifications {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0.18;
+    height: 100%;
+    border-right: 1px solid #eaeaea;
+  }
+
+  .border--header__logged-in {
+    flex: 0.6;
+    padding-right: 90px;
+
+    svg {
+      margin-left: 10px;
+    }
+  }
+}
+
+#board-header > div {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  border-radius: 3px;
+  padding-top: 8px;
+  padding-left: 16px;
+  margin-left: 16px;
+  font-weight: 700;
+  height: 24px;
+  width: 100px;
+}
+
+#board-header > div:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.board-header-wrapper-name {
+  cursor: default;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+  padding-left: 4px;
+  padding-right: 2px;
+  text-decoration: none;
+  max-width: calc(100% - 12px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: white;
+}
+.board-wrapper {
+  height: 100%;
+  padding-top: 80px;
+}
+
+.boards {
+  background-color: white;
+  z-index: 10;
+  position: fixed;
+  top: 44px;
+  bottom: auto;
+  max-height: calc(100% - 48px);
+  width: 280px;
+  border-radius: 3px;
+  padding: 10px 6px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+}
+
+.board {
+  height: 24px;
+  padding-top: 6px;
+  padding-left: 6px;
+}
+
+.board:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}

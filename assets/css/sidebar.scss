@@ -9,12 +9,19 @@
   overflow-x: hidden;
   padding-top: 20px;
   border-right: 1px solid #ECECEC;
+
+  .logo {
+    border-bottom: 1px solid #eaeaea;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
 }
 
 .sidenav a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   margin-left: 10px;
   font-size: 18px;
   color: #5E5E5E;
@@ -25,7 +32,7 @@
 }
 
 .sidenav a:first-child {
-  margin-top: 70px;
+  margin-top: 120px;
 }
 
 .sidenav a:hover, .sidenav__active {
