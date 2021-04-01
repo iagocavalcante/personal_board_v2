@@ -1,5 +1,7 @@
 .board--header {
   position: fixed;
+  top: 0;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
