@@ -1,5 +1,7 @@
 # PersonalBoardV2
 
+App for manage tasks in the easy way
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
