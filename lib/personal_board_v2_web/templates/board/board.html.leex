@@ -62,15 +62,15 @@
       </div>
       <%= if @show_card_composer == list.id do %>
         <div class="card-composer">
-          <%= form_for :card, "#", [phx_submit: :add_card], fn f -> %>
-          <%= text_input f, :title, id: "new-list-name", class: "list-name-input", autofocus: true %>
-          <%= hidden_input f, :list_id, value: list.id  %>
-          <%= submit "Add Card", class: "primary" %>
-          <div class="close-icon icons" phx-click="show_card_composer" phx-value-list_id="0">
-            <i class="material-icons ">close</i>
-          </div>
+          <form action="#" phx-submit="add_card">
+            <%= text_input :card, :title, id: "new-list-name", class: "list-name-input", autofocus: true %>
+            <%= hidden_input :card, :list_id, value: list.id  %>
+            <%= submit "Add Card", class: "primary" %>
+            <div class="close-icon icons" phx-click="show_card_composer" phx-value-list_id="0">
+              <i class="material-icons ">close</i>
+            </div>
+          </form>
         </div>
-      <% end %>
     <% end %>
   </div>
   <a href="#" class="open-card-composer" phx-click="show_card_composer" phx-value-list_id="<%= list.id %>" >

@@ -149,7 +149,6 @@ defmodule PersonalBoardV2Web.BoardsLive do
     PersonalBoardV2.Card.reorder_list_after_adding_card(%Card{list_id: list_id, position: -1})
 
     PersonalBoardV2.Card.create_card(%{"title" => title, "list_id" => list_id, "position" => 0})
-
     update_board_for_subscribers(socket.assigns.current_board.id)
     {:noreply, assign(socket, lists: current_lists(socket), show_card_composer: 0)}
   end

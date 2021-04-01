@@ -7,19 +7,18 @@ import Sortable from 'sortablejs'
 let Hooks = {}
 
 Hooks.Lists = {
-  mounted() {
-    const that = this
+  mounted () {
     Sortable.create(this.el, {
       group: 'lists',
       direction: 'horizontal',
       fallbackOnBody: false,
-      onEnd: function(event) {
+      onEnd: (event) => {
         const details = {
           list_id: parseInt(event.item.id),
           to_position: event.newIndex,
         }
 
-        that.pushEvent('reorder_list', details)
+        this.pushEvent('reorder_list', details)
       },
     })
 
@@ -28,7 +27,7 @@ Hooks.Lists = {
       button.addEventListener('click', event => {
         const list_id = button.closest('div.list-wrapper').id
         const { left, top } = button.getBoundingClientRect()
-        that.pushEvent('show_list_actions', {
+        this.pushEvent('show_list_actions', {
           should_show: 'true',
           left,
           top: top + 65,
@@ -40,28 +39,27 @@ Hooks.Lists = {
 }
 
 Hooks.List = {
-  mounted() {
-    const that = this
+  mounted () {
     const cards = this.el.querySelector('div.list-cards')
     if (!cards) return
 
     Sortable.create(cards, {
       group: 'cards',
-      onEnd: function(event) {
+      onEnd: (event) => {
         const details = {
           to_list: parseInt(event.to.dataset.listId),
           to_position: event.newIndex,
           card_id: parseInt(event.item.dataset.cardId),
         }
 
-        that.pushEvent('move_card', details)
+        this.pushEvent('move_card', details)
       },
     })
   },
 }
 
 Hooks.ListTitle = {
-  mounted() {
+  mounted () {
     const that = this
     const input = this.el
 
@@ -75,7 +73,7 @@ Hooks.ListTitle = {
 }
 
 Hooks.CardTitle = {
-  mounted() {
+  mounted () {
     const that = this
     const input = this.el
 
