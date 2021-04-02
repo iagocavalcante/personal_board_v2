@@ -1,4 +1,5 @@
 .board--header {
+  background-color: #fff;
   position: fixed;
   top: 0;
   overflow: hidden;
@@ -91,29 +92,114 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: white;
+  background-color: #F8F8F8;
 }
 .board-wrapper {
   height: 100%;
   padding-top: 80px;
+  background-color: #fff;
 }
 
 .boards {
-  background-color: white;
-  z-index: 10;
-  position: fixed;
-  top: 44px;
-  bottom: auto;
+  background-color: #fff;
+  align-items: center;
+  display: flex;
   max-height: calc(100% - 48px);
-  width: 280px;
+  width: 100%;
   border-radius: 3px;
-  padding: 10px 6px;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  padding: 20px 65px;
+  box-shadow: 0px 1px 0px 0px rgba(9,30,66,.25);
 }
 
 .board {
-  height: 24px;
-  padding-top: 6px;
-  padding-left: 6px;
+  display: flex;
+  justify-self: start;
+  padding: 15px;
+  width: 408px;
+  margin-right: 25px;
+  background: #FFFFFF;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  border: 0.6px solid #eaeaea;
+
+  &--add-new {
+    width: 80px;
+    height: 75px;
+    background: #EAF7FF;
+    border: 1px solid #B7E5FF;
+    box-sizing: border-box;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    color: white;
+    
+    &:hover {
+      background-color: hsla(0, 0%, 100%, 0.32);
+    }
+  }
+
+  &__inactive {
+    box-shadow: none;
+  }
+
+  &--avatar {
+    filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.08));
+    width: 52px;
+    height: 52px;
+    background: #A9A9A9;
+    border-radius: 5px;
+  }
+  &--info {
+    margin-left: 15px;
+    width: 60%;
+
+    &__title {
+      padding: 0;
+      margin: 0;
+      color: #5E5E5E;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    &__subtitle {
+      padding: 0;
+      font-size: 14px;
+      font-weight: 100;
+      color: #A9A9A9
+    }
+  }
+
+  &--badge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    margin-left: 10px;
+    width: 86px;
+    height: 24px;
+    background: #FFC4C4;
+    border: 1px solid #FF8686;
+    box-sizing: border-box;
+    border-radius: 15px;
+
+
+    &__title {
+      align-self: center;
+      padding-top: 9px;
+      padding-left: 10px;
+      color: #FF5A5A;
+      font-size: 12px;
+      font-weight: normal;
+    }
+    &__icon {
+      align-self: center;
+      padding-top: 10px;
+      padding-left: 10px;
+      font-size: 14px;
+      font-weight: 100;
+      color: #A9A9A9
+    }
+  }
 }
 
 .board:hover {

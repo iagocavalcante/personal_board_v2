@@ -109,126 +109,143 @@
     </div>
   </div>
   <div class="board-wrapper">
-    <%= if @show_boards == true do %>
-      <div class="boards" >
-        <%= for %{id: id, title: title} <- @boards do %>
-          <div class="board" phx-click="set_current_board" phx-value-board_id="<%= id %>">
-            <%= title %>
+    <div class="boards" >
+      <div class="board">
+        <div class="board--avatar">
+        </div>
+        <div class="board--info">
+          <p class="board--info__title"><%= @current_board.title %></p>
+          <p class="board--info__subtitle"><%= @current_board.title %></p>
+        </div>
+        <div class="board--badge">
+          <p class="board--badge__icon">
+            <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.99991 8C4.33977 8 4.61529 7.72448 4.61529 7.38461C4.61529 7.04474 4.33977 6.76923 3.99991 6.76923C3.66004 6.76923 3.38452 7.04474 3.38452 7.38461C3.38452 7.72448 3.66004 8 3.99991 8Z" fill="#FF5A5A"/>
+              <path d="M6.46154 4.61538V2.46154C6.46154 1.10425 5.35729 0 4 0C2.64271 0 1.53846 1.10425 1.53846 2.46154V4.61538H0V10.5026H3.69231V8.57645C3.16205 8.43947 2.76923 7.95707 2.76923 7.38462C2.76923 6.70597 3.32135 6.15385 4 6.15385C4.67865 6.15385 5.23077 6.70597 5.23077 7.38462C5.23077 7.95705 4.83795 8.43947 4.30769 8.57645V10.5026H8V4.61538H6.46154ZM2.46154 4.61538V2.46154C2.46154 1.61323 3.15169 0.923077 4 0.923077C4.84831 0.923077 5.53846 1.61323 5.53846 2.46154V4.61538H2.46154Z" fill="#FF5A5A"/>
+            </svg>
+          </p>
+          <p class="board--badge__title">Private</p>
+        </div>
+      </div>
+      <%= for %{id: id, title: title} <- @boards do %>
+        <div class="board board__inactive" phx-click="set_current_board" phx-value-board_id="<%= id %>">
+          <div class="board--avatar">
           </div>
-        <% end %>
-        <%= if @show_board_composer == true do %>
-          <div class="board-composer">
-            <%= form_for :board, "#", [phx_submit: :add_board], fn f -> %>
-            <%= text_input f, :title, id: "new-list-name", class: "list-name-input", autofocus: true %>
-            <%= submit "Add Board", class: "primary" %>
-            <span class="close-icon icons" phx-click="show_board_composer" phx-value-should_show="false">
-              <i class="material-icons icons">close</i>
-            </span>
+          <div class="board--info">
+            <p class="board--info__title"><%= title %></p>
+            <p class="board--info__subtitle"><%= title %></p>
+          </div>
+          <div class="board--badge">
+            <p class="board--badge__icon">
+              <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.99991 8C4.33977 8 4.61529 7.72448 4.61529 7.38461C4.61529 7.04474 4.33977 6.76923 3.99991 6.76923C3.66004 6.76923 3.38452 7.04474 3.38452 7.38461C3.38452 7.72448 3.66004 8 3.99991 8Z" fill="#FF5A5A"/>
+                <path d="M6.46154 4.61538V2.46154C6.46154 1.10425 5.35729 0 4 0C2.64271 0 1.53846 1.10425 1.53846 2.46154V4.61538H0V10.5026H3.69231V8.57645C3.16205 8.43947 2.76923 7.95707 2.76923 7.38462C2.76923 6.70597 3.32135 6.15385 4 6.15385C4.67865 6.15385 5.23077 6.70597 5.23077 7.38462C5.23077 7.95705 4.83795 8.43947 4.30769 8.57645V10.5026H8V4.61538H6.46154ZM2.46154 4.61538V2.46154C2.46154 1.61323 3.15169 0.923077 4 0.923077C4.84831 0.923077 5.53846 1.61323 5.53846 2.46154V4.61538H2.46154Z" fill="#FF5A5A"/>
+              </svg>
+            </p>
+            <p class="board--badge__title">Private</p>
+          </div>
+        </div>
+      <% end %>
+      <div class="board board--add-new">
+        <div class="show-list-composer" phx-click="show_board_composer" phx-value-should_show="true" >
+          <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.75 8.625C12.5429 8.625 12.375 8.45709 12.375 8.25V0H8.625V8.25C8.625 8.45709 8.45709 8.625 8.25 8.625H0V12.375H8.25C8.45709 12.375 8.625 12.5429 8.625 12.75V21H12.375V12.75C12.375 12.5429 12.5429 12.375 12.75 12.375H21V8.625H12.75Z" fill="#A3A3A3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="lists" phx-hook="Lists"  id="lists" >
+    <%= for list <- @lists do %>
+      <div  class="list-wrapper" id="<%= list.id %>" data-position="<%= list.position %>" phx-hook="List">
+        <div class="list">
+          <div class="list-header" id="<%= list.id %>"  phx-hook="ListTitle" >
+            <input style="display:<%= if @edit_list_title == list.id, do: "block", else: "none" %>" autofocus
+                  name="list-title"  phx-hook="ListTitle" value="<%= list.title %>" data-list_id="<%= list.id %>" id="<%= list.id %>"></input>
+          <h2 phx-click="edit_list_title" phx-value-list_id="<%= list.id %>" style="display: <%= if @edit_list_title  == list.id, do: "none", else: "block" %>"><%= list.title %></h2>
+          <div class="more-list-actions icons" >
+            <i class="material-icons ">more_horiz</i>
+          </div>
+        </div>
+        <% dom_id = "list" <> Integer.to_string(list.id) %>
+        <% sorted_cards = Enum.sort(list.cards,  &(&1.position <= &2.position)) %>
+        <div class="list-cards" id="<%= dom_id %>" data-list-id="<%= list.id %>" >
+          <%= for card <- sorted_cards do %>
+            <%= live_component(
+                @socket,
+                PersonalBoardV2Web.CardComponent,
+                card: card,
+                edit_card_title: @edit_card_title,
+                list_id: list.id
+              )
+            %>
           <% end %>
         </div>
-      <% else %>
-        <div class="divider"></div>
-        <div class="board" phx-click="show_board_composer" phx-value-should_show="true">
-          Add Board
-        </div>
+        <%= if @show_card_composer == list.id do %>
+          <div class="card-composer">
+            <form action="#" phx-submit="add_card">
+              <%= text_input :card, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
+              <%= hidden_input :card, :list_id, value: list.id  %>
+              <%= submit "Add Card", class: "primary" %>
+              <div class="close-icon icons" phx-click="show_card_composer" phx-value-list_id="0">
+                <i class="material-icons ">close</i>
+              </div>
+            </form>
+          </div>
       <% end %>
     </div>
+    <a href="#" class="open-card-composer" phx-click="show_card_composer" phx-value-list_id="<%= list.id %>" >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.3828 0 0 5.3828 0 12C0 18.6172 5.3828 24 12 24C18.6172 24 24 18.6163 24 12C24 5.38373 18.6172 0 12 0ZM12 22.141C6.40898 22.141 1.85902 17.592 1.85902 12C1.85902 6.40805 6.40898 1.85902 12 1.85902C17.591 1.85902 22.141 6.40805 22.141 12C22.141 17.592 17.592 22.141 12 22.141Z" fill="#5D5D5D"/>
+        <path d="M16.6475 10.9868H12.9295V7.26879C12.9295 6.7557 12.514 6.33926 11.9999 6.33926C11.4859 6.33926 11.0704 6.7557 11.0704 7.26879V10.9868H7.35238C6.83835 10.9868 6.42285 11.4033 6.42285 11.9164C6.42285 12.4295 6.83835 12.8459 7.35238 12.8459H11.0704V16.5639C11.0704 17.077 11.4859 17.4935 11.9999 17.4935C12.514 17.4935 12.9295 17.077 12.9295 16.5639V12.8459H16.6475C17.1615 12.8459 17.577 12.4295 17.577 11.9164C17.577 11.4033 17.1615 10.9868 16.6475 10.9868Z" fill="#5D5D5D"/>
+      </svg>
+      <div class="add-text">Add another card</div>
+    </a>
   </div>
-<% end %>
-<div class="board-header-wrapper-name">
-  <h1><%= @current_board.title %></h1>
-</div>
-<div class="lists" phx-hook="Lists"  id="lists" >
-  <%= for list <- @lists do %>
-    <div  class="list-wrapper" id="<%= list.id %>" data-position="<%= list.position %>" phx-hook="List">
+  <% end %>
+  <%= if @show_list_composer == true do %>
+    <div class="list-wrapper" id="0">
       <div class="list">
-        <div class="list-header" id="<%= list.id %>"  phx-hook="ListTitle" >
-          <input style="display:<%= if @edit_list_title == list.id, do: "block", else: "none" %>" autofocus
-                 name="list-title"  phx-hook="ListTitle" value="<%= list.title %>" data-list_id="<%= list.id %>" id="<%= list.id %>"></input>
-        <h2 phx-click="edit_list_title" phx-value-list_id="<%= list.id %>" style="display: <%= if @edit_list_title  == list.id, do: "none", else: "block" %>"><%= list.title %></h2>
-        <div class="more-list-actions icons" >
-          <i class="material-icons ">more_horiz</i>
-        </div>
-      </div>
-      <% dom_id = "list" <> Integer.to_string(list.id) %>
-      <% sorted_cards = Enum.sort(list.cards,  &(&1.position <= &2.position)) %>
-      <div class="list-cards" id="<%= dom_id %>" data-list-id="<%= list.id %>" >
-        <%= for card <- sorted_cards do %>
-          <%= live_component(
-              @socket,
-              PersonalBoardV2Web.CardComponent,
-              card: card,
-              edit_card_title: @edit_card_title,
-              list_id: list.id
-            )
-          %>
+        <div class="card-composer">
+          <%= form_for :list, "#", [phx_submit: :add_list], fn f -> %>
+          <%= text_input f, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
+          <%= hidden_input f, :board_id, value: @current_board.id  %>
+          <%= submit "Add List", class: "primary" %>
+          <span class="close-icon icons" phx-click="show_list_composer" phx-value-should_show="false">
+            <i class="material-icons icons">close</i>
+          </span>
         <% end %>
       </div>
-      <%= if @show_card_composer == list.id do %>
-        <div class="card-composer">
-          <form action="#" phx-submit="add_card">
-            <%= text_input :card, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
-            <%= hidden_input :card, :list_id, value: list.id  %>
-            <%= submit "Add Card", class: "primary" %>
-            <div class="close-icon icons" phx-click="show_card_composer" phx-value-list_id="0">
-              <i class="material-icons ">close</i>
-            </div>
-          </form>
-        </div>
-    <% end %>
-  </div>
-  <a href="#" class="open-card-composer" phx-click="show_card_composer" phx-value-list_id="<%= list.id %>" >
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 0C5.3828 0 0 5.3828 0 12C0 18.6172 5.3828 24 12 24C18.6172 24 24 18.6163 24 12C24 5.38373 18.6172 0 12 0ZM12 22.141C6.40898 22.141 1.85902 17.592 1.85902 12C1.85902 6.40805 6.40898 1.85902 12 1.85902C17.591 1.85902 22.141 6.40805 22.141 12C22.141 17.592 17.592 22.141 12 22.141Z" fill="#5D5D5D"/>
-      <path d="M16.6475 10.9868H12.9295V7.26879C12.9295 6.7557 12.514 6.33926 11.9999 6.33926C11.4859 6.33926 11.0704 6.7557 11.0704 7.26879V10.9868H7.35238C6.83835 10.9868 6.42285 11.4033 6.42285 11.9164C6.42285 12.4295 6.83835 12.8459 7.35238 12.8459H11.0704V16.5639C11.0704 17.077 11.4859 17.4935 11.9999 17.4935C12.514 17.4935 12.9295 17.077 12.9295 16.5639V12.8459H16.6475C17.1615 12.8459 17.577 12.4295 17.577 11.9164C17.577 11.4033 17.1615 10.9868 16.6475 10.9868Z" fill="#5D5D5D"/>
-    </svg>
-    <div class="add-text">Add another card</div>
-  </a>
-</div>
-<% end %>
-<%= if @show_list_composer == true do %>
-  <div class="list-wrapper" id="0">
-    <div class="list">
-      <div class="card-composer">
-        <%= form_for :list, "#", [phx_submit: :add_list], fn f -> %>
-        <%= text_input f, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
-        <%= hidden_input f, :board_id, value: @current_board.id  %>
-        <%= submit "Add List", class: "primary" %>
-        <span class="close-icon icons" phx-click="show_list_composer" phx-value-should_show="false">
-          <i class="material-icons icons">close</i>
-        </span>
-      <% end %>
     </div>
   </div>
-</div>
-<% else %>
-  <div class="list-wrapper mod-add">
-    <div class="show-list-composer" phx-click="show_list_composer" phx-value-should_show="true" >
-      <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12.75 8.625C12.5429 8.625 12.375 8.45709 12.375 8.25V0H8.625V8.25C8.625 8.45709 8.45709 8.625 8.25 8.625H0V12.375H8.25C8.45709 12.375 8.625 12.5429 8.625 12.75V21H12.375V12.75C12.375 12.5429 12.5429 12.375 12.75 12.375H21V8.625H12.75Z" fill="#A3A3A3"/>
-      </svg>
+  <% else %>
+    <div class="list-wrapper mod-add">
+      <div class="show-list-composer" phx-click="show_list_composer" phx-value-should_show="true" >
+        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.75 8.625C12.5429 8.625 12.375 8.45709 12.375 8.25V0H8.625V8.25C8.625 8.45709 8.45709 8.625 8.25 8.625H0V12.375H8.25C8.45709 12.375 8.625 12.5429 8.625 12.75V21H12.375V12.75C12.375 12.5429 12.5429 12.375 12.75 12.375H21V8.625H12.75Z" fill="#A3A3A3"/>
+        </svg>
+      </div>
+    </div>
+  <% end %>
+  </div>
+  </div>
+  <%= if @show_list_actions == true do %>
+  <div id="list-actions" style="top: <%= @list_actions_y %>px; left: <%= @list_actions_x %>px;">
+    <div id="list-actions-header">
+      <span style="width: 28px;"> </span>
+      <span>List Actions</span>
+      <span class="icons" phx-click="show_list_actions" phx-value-should_show="false">
+        <i class="material-icons">close</i>
+      </span>
+    </div>
+    <div id="list-actions-body" >
+      <div class="divider" ></div>
+      <div class="list-actions-item" phx-click="show_card_composer" phx-value-list_id="<%= @list_actions_list_id %>" >Add Card...</div>
+      <div class="list-actions-item" phx-click="move_list">Move List</div>
+      <div class="divider" ></div>
+      <div class="list-actions-item" phx-click="archive_list" phx-value-list_id="<%= @list_actions_list_id %>" >Archive List</div>
     </div>
   </div>
-<% end %>
-</div>
-</div>
-<%= if @show_list_actions == true do %>
-<div id="list-actions" style="top: <%= @list_actions_y %>px; left: <%= @list_actions_x %>px;">
-  <div id="list-actions-header">
-    <span style="width: 28px;"> </span>
-    <span>List Actions</span>
-    <span class="icons" phx-click="show_list_actions" phx-value-should_show="false">
-      <i class="material-icons">close</i>
-    </span>
+  <% end %>
   </div>
-  <div id="list-actions-body" >
-    <div class="divider" ></div>
-    <div class="list-actions-item" phx-click="show_card_composer" phx-value-list_id="<%= @list_actions_list_id %>" >Add Card...</div>
-    <div class="list-actions-item" phx-click="move_list">Move List</div>
-    <div class="divider" ></div>
-    <div class="list-actions-item" phx-click="archive_list" phx-value-list_id="<%= @list_actions_list_id %>" >Archive List</div>
-  </div>
-</div>
-<% end %>
-</div>
 </div>
