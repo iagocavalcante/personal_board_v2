@@ -1,8 +1,10 @@
 import '../css/app.scss'
+import "alpinejs"
+import Sortable from 'sortablejs'
+
 import 'phoenix_html'
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
-import Sortable from 'sortablejs'
 
 let Hooks = {}
 

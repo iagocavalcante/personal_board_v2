@@ -7,8 +7,8 @@
     <%= csrf_meta_tag() %>
     <%= live_title_tag assigns[:page_title] || "PersonalBoard", suffix: " · Phoenix Framework" %>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script async defer data-domain="personal-board.herokuapp.com" src="https://plausible.io/js/plausible.js"></script>
   </head>
   <body>
     <nav class="sidenav">
@@ -51,4 +51,5 @@
       <%= @inner_content %>
     </main>
   </body>
+  <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
 </html>

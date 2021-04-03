@@ -1,0 +1,23 @@
+.button {
+  @apply inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+}
+
+.button:disabled {
+  @apply cursor-not-allowed text-gray-400;
+}
+
+.button--left-rounded {
+  @apply rounded-none rounded-l-md;
+}
+
+.button--right-rounded {
+  @apply rounded-none rounded-r-md;
+}
+
+.button.phx-click-loading {
+  pointer-events: none;
+}
+
+.button--primary {
+  @apply border-blue-400 bg-blue-400 text-blue-900 hover:bg-blue-300 hover:text-blue-900;
+}

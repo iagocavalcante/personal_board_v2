@@ -1,5 +1,5 @@
 defmodule PersonalBoardV2Web.CardComponent do
-  use Phoenix.LiveComponent
+  use PersonalBoardV2Web, :live_component
 
   def render(assigns) do
     editing? = assigns.edit_card_title == assigns.card.id

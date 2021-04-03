@@ -1,0 +1,15 @@
+.modal__header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.modal__content {
+  @apply px-4 pt-5 pb-4 sm:p-6 sm:pb-4;
+}
+
+.modal__footer {
+  @apply px-4 py-3 space-x-2 bg-gray-50 sm:px-6 sm:flex;
+}

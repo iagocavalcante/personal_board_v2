@@ -19,8 +19,9 @@ defmodule PersonalBoardV2Web.Router do
   scope "/", PersonalBoardV2Web do
     pipe_through :browser
 
-    live "/", BoardsLive
-    get "/pages", PageController, :index
+    live "/", BoardsLive, :index
+    live "/boards/new", BoardsLive, :new
+    live "/boards/:id/edit", BoardsLive, :edit
   end
 
   scope "/admin" do

@@ -1,0 +1,13 @@
+<%= f = form_for :board, "#",
+  id: "add-board-form",
+  phx_target: @myself,
+  phx_submit: "add_board" %>
+
+  <div class="modal__content">
+    <%= text_input f, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
+  </div>
+  <div class="modal__footer">
+    <%= live_patch gettext("Cancelar"), to: "/", class: "button button--secondary sm:ml-auto" %>
+    <%= submit gettext("Salvar"), phx_disable_with: gettext("Salvando..."), class: "button button--primary" %>
+  </div>
+</form>

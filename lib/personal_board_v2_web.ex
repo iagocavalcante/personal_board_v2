@@ -42,10 +42,10 @@ defmodule PersonalBoardV2Web do
     end
   end
 
-  def live_view do
+  def live_view(opts \\ []) do
     quote do
-      use Phoenix.LiveView,
-        layout: {PersonalBoardV2Web.LayoutView, "live.html"}
+      opts = Keyword.merge([layout: {PersonalBoardV2Web.LayoutView, "live.html"}], unquote(opts))
+      use Phoenix.LiveView, opts
 
       unquote(view_helpers())
     end
@@ -88,6 +88,8 @@ defmodule PersonalBoardV2Web do
       import Phoenix.View
 
       import PersonalBoardV2Web.ErrorHelpers
+      import PersonalBoardV2Web.Live.LiveHelpers
+      import PersonalBoardV2Web.ViewHelpers
       import PersonalBoardV2Web.Gettext
       alias PersonalBoardV2Web.Router.Helpers, as: Routes
     end

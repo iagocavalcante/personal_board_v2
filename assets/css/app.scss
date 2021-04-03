@@ -1,11 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-@import './card.scss';
-@import './grid.scss';
-@import './navbar.scss';
-@import './sidebar.scss';
-@import './board.scss';
-@import './list.scss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+
+@import "card.scss";
+@import "grid.scss";
+@import "navbar.scss";
+@import "sidebar.scss";
+@import "board.scss";
+@import "list.scss";
+@import "modal.scss";
+@import "forms.scss";
+@import "buttons.scss";
 
 html {
   -webkit-background-size: cover;
@@ -22,103 +30,6 @@ html {
 body,
 main {
   height: 100%;
-}
-
-h1 {
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 28px;
-  margin: 0 0 12px;
-}
-
-h2 {
-  font-size: 20px;
-  line-height: 24px;
-}
-
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-  margin: 0 0 8px;
-}
-
-h3,
-h4,
-h5,
-h6 {
-  font-size: 16px;
-  line-height: 20px;
-}
-
-hr {
-  background-color: rgba(9, 30, 66, 0.13);
-  border: 0;
-  height: 1px;
-  margin: 16px 0;
-  padding: 0;
-  width: 100%;
-}
-
-a {
-  color: #172b4d;
-}
-
-a:hover {
-  color: #091e42;
-}
-
-a.disabled,
-a.disabled:hover {
-  color: #6b778c;
-  cursor: default;
-  text-decoration: none;
-}
-
-p {
-  margin: 0 0 8px;
-}
-
-code {
-  background-color: #f4f5f7;
-  border-radius: 3px;
-  box-shadow: 0 0 0 1px rgba(9, 30, 66, 0.13);
-  color: #eb5a46;
-  padding: 1px 3px;
-  margin: -1px 2px;
-}
-
-pre code {
-  background-color: none;
-  border-radius: 0;
-  box-shadow: none;
-  color: #172b4d;
-  margin: 0;
-  padding: 0;
-}
-
-code,
-pre,
-tt {
-  font-family: SF Mono, Segoe UI Mono, Roboto Mono, Ubuntu Mono, Menlo, Courier,
-    monospace;
-  line-height: 20px;
-}
-
-blockquote {
-  border-left: 1px solid rgba(9, 30, 66, 0.13);
-  color: #6b778c;
-  margin: 12px 0 12px 11px;
-  padding: 0 0 0 12px;
-}
-
-ol,
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .textarea,
@@ -139,6 +50,6 @@ ul {
 
 .container {
   height: 100%;
-  margin-left: 240px;
+  margin-left: 250px;
   overflow: hidden;
 }

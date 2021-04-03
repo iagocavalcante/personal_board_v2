@@ -1,5 +1,6 @@
 defmodule PersonalBoardV2Web.BoardsLive do
-  use Phoenix.LiveView
+  use PersonalBoardV2Web, :live_view
+
   alias PersonalBoardV2.Actors.Card
 
   @topic "board_updates"
@@ -26,6 +27,29 @@ defmodule PersonalBoardV2Web.BoardsLive do
        edit_list_title: 0,
        edit_card_title: 0
      )}
+  end
+
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :new, _params) do
+    socket
+    |> assign(:page_title, gettext("Novo Quadro"))
+    |> assign(:board, %PersonalBoardV2.Actors.Board{})
+  end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:page_title, gettext("Quadros"))
+    |> assign(:board, nil)
+  end
+
+  defp apply_action(socket, nil, _params) do
+    socket
+    |> assign(:page_title, gettext("Quadros"))
+    |> assign(:board, nil)
   end
 
   def update_board_for_subscribers(board_id) do
