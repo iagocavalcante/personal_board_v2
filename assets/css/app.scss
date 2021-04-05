@@ -22,7 +22,7 @@ html {
   background-size: cover;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  font-family: Heebo, sans-serif;
+  font-family: Heebo, sans-serif !important;
   height: 100%;
   font-size: 14px;
 }
@@ -30,6 +30,7 @@ html {
 body,
 main {
   height: 100%;
+  overflow: hidden;
 }
 
 .textarea,
@@ -52,4 +53,5 @@ main {
   height: 100%;
   margin-left: 250px;
   overflow: hidden;
+  background-color: #F8F8F8;
 }

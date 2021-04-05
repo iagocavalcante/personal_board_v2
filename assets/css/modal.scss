@@ -13,3 +13,8 @@
 .modal__footer {
   @apply px-4 py-3 space-x-2 bg-gray-50 sm:px-6 sm:flex;
 }
+
+.modal__close--icon {
+  height: 24px;
+  width: 24px;
+}

@@ -2,6 +2,8 @@ defmodule PersonalBoardV2Web.ViewHelpers do
   @moduledoc """
   View Helpers used across the app.
   """
+  use Phoenix.HTML
+  alias PersonalBoardV2Web.Router.Helpers, as: Routes
 
   @spec format_date(Timex.Types.valid_datetime()) :: String.t() | no_return()
   def format_date(date) do
@@ -15,24 +17,12 @@ defmodule PersonalBoardV2Web.ViewHelpers do
     seconds |> Timex.Duration.from_seconds() |> Timex.Duration.to_time!()
   end
 
-  def svg_icon(match, opts \\ [])
 
-  for file <- PersonalBoardV2.svg_icons() do
-    match = Path.basename(file, ".svg")
-    atom = String.to_atom(match)
-    Module.register_attribute(__MODULE__, atom, persist: true)
-    Module.put_attribute(__MODULE__, atom, File.read!(file))
+  def icon_tag(socket, name, opts \\ []) do
+    classes = Keyword.get(opts, :class, "") <> " icon"
 
-    def svg_icon(unquote(match), []), do: hd(__MODULE__.__info__(:attributes)[unquote(atom)])
-
-    # sobelow_skip ["XSS"]
-    def svg_icon(unquote(match), opts) do
-      opts
-      |> Enum.reduce(Floki.parse_fragment!(svg_icon(unquote(match), [])), fn {k, v}, svg ->
-        Floki.attr(svg, "svg", "#{k}", fn _ -> "#{v}" end)
-      end)
-      |> Floki.raw_html()
-      |> Phoenix.HTML.raw()
+    content_tag(:svg, class: classes) do
+      tag(:use, "xlink:href": Routes.static_path(socket, "/images/icons.svg#" <> name))
     end
   end
 end

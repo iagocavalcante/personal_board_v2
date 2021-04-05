@@ -1,4 +1,4 @@
-.board--header {
+.board__header {
   background-color: #fff;
   position: fixed;
   top: 0;
@@ -7,16 +7,17 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  height: 83px;
+  height: 64px;
   width: 100%;
   padding-top: 3px;
   border-bottom: 1px solid #eaeaea;
 
-  &__search {
+  &--search {
     flex: 0.7;
     display: inline-flex;
-    &--icon {
+    &__icon {
       height: 20px;
+      width: 20px;
       margin-left: 30px;
       margin-right: 10px;
       path {
@@ -36,177 +37,184 @@
     }
   }
   
-  &__invited {
+  &--invited {
     display: flex;
     align-items: center;
     flex: 0.65;
     height: 100%;
     border-right: 1px solid #eaeaea;
+
+    &__icon {
+      height: 60px;
+      width: 241px;
+    }
   }
   
-  &__notifications {
+  &--notifications {
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 0.18;
     height: 100%;
     border-right: 1px solid #eaeaea;
+
+    &__icon {
+      height: 33px;
+      width: 30px;
+    }
   }
 
-  &__logged-in {
+  &--logged-in {
     flex: 0.6;
     padding-right: 90px;
 
-    svg {
+    &__icon {
+      height: 40px;
+      width: 195px;
       margin-left: 10px;
     }
   }
 }
 
-#board-header > div {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: white;
-  border-radius: 3px;
-  padding-top: 8px;
-  padding-left: 16px;
-  margin-left: 16px;
-  font-weight: 700;
-  height: 24px;
-  width: 100px;
-}
-
-#board-header > div:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.board-wrapper {
+.boards {
   position: fixed;
-  top: 83px;
+  top: 64px;
   overflow-x: auto;
   background-color: #fff;
   align-items: center;
   display: grid;
-  grid-template-columns: 0.9fr 0.2fr;
+  grid-template-columns: 4fr 1fr;
   max-height: calc(100% - 48px);
   border-radius: 3px;
   box-shadow: 0px 1px 0px 0px rgba(9,30,66,.25);
-}
 
-.board__button {
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  border-radius: 3px;
-  border-left: 1px solid #eaeaea;
-  width: 225px;
-  height: 100%;
-
-  &--add-new {
-    justify-content: center;
-    width: 80px;
-    height: 75px;
-    background: #EAF7FF;
-    border: 1px solid #B7E5FF;
-    box-sizing: border-box;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-self: center;
-    color: white;
-    
-    &:hover {
-      cursor: pointer;
-      background-color: hsla(0, 0%, 100%, 0.32);
-    }
-  }
-}
-
-.boards {
-  overflow-x: auto;
-  background-color: #fff;
-  align-items: center;
-  display: flex;
-  max-height: calc(100% - 48px);
-  border-radius: 3px;
-  padding-top: 25px;
-  padding-bottom: 40px;
-  margin-left: 20px;
-}
-
-.board {
-  display: flex;
-  padding: 15px;
-  min-width: 408px;
-  margin-right: 25px;
-  background: #FFFFFF;
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  border: 0.6px solid #eaeaea;
-
-  &:hover {
-    cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  &--inactive {
-    box-shadow: none;
-  }
-
-  &__avatar {
-    filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.08));
-    width: 52px;
-    height: 52px;
-    background: #A9A9A9;
-    border-radius: 5px;
-  }
-
-  &__info {
-    margin-left: 15px;
-    width: 60%;
-
-    &--title {
-      padding: 0;
-      margin: 0;
-      color: #5E5E5E;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    &--subtitle {
-      padding: 0;
-      font-size: 14px;
-      font-weight: 100;
-      color: #A9A9A9
-    }
-  }
-
-  &__badge {
-    display: flex;
-    flex-direction: row;
+  &__container {
+    overflow-x: auto;
+    background-color: #fff;
     align-items: center;
-    align-content: center;
-    margin-left: 10px;
-    width: 86px;
-    height: 24px;
-    background: #FFC4C4;
-    border: 1px solid #FF8686;
-    box-sizing: border-box;
-    border-radius: 15px;
+    display: flex;
+    max-height: calc(100% - 48px);
+    border-radius: 3px;
+    padding-top: 25px;
+    padding-bottom: 40px;
+    margin-left: 20px;
 
+    .board {
+      display: flex;
+      padding: 15px;
+      min-width: 408px;
+      margin-right: 25px;
+      background: #FFFFFF;
+      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      border: 0.6px solid #eaeaea;
+    
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    
+      &--inactive {
+        box-shadow: none;
+      }
+    
+      &__avatar {
+        filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.08));
+        width: 52px;
+        height: 52px;
+        background: #A9A9A9;
+        border-radius: 5px;
+      }
+    
+      &__info {
+        margin-left: 15px;
+        width: 60%;
+    
+        &--title {
+          padding: 0;
+          margin: 0;
+          color: #5E5E5E;
+          font-size: 20px;
+          font-weight: bold;
+        }
+        &--subtitle {
+          padding: 0;
+          font-size: 14px;
+          font-weight: 100;
+          color: #A9A9A9
+        }
+      }
+    
+      &__badge {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-content: center;
+        margin-left: 10px;
+        width: 86px;
+        height: 24px;
+        background: #FFC4C4;
+        border: 1px solid #FF8686;
+        box-sizing: border-box;
+        border-radius: 15px;
+    
+    
+        &--title {
+          align-self: center;
+          padding-left: 5px;
+          color: #FF5A5A;
+          font-size: 12px;
+          font-weight: normal;
+        }
+        &--icon {
+          align-self: center;
+          padding-left: 10px;
+          font-size: 14px;
+          font-weight: 100;
+          color: #A9A9A9;
 
-    &--title {
-      align-self: center;
-      padding-left: 5px;
-      color: #FF5A5A;
-      font-size: 12px;
-      font-weight: normal;
+          &-locker {
+            height: 11px;
+            width: 8px;
+          }
+        }
+      }
     }
-    &--icon {
+  }
+
+  &__button {
+    background-color: #fff;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 3px;
+    width: 225px;
+    height: 100%;
+  
+    &--add-new {
+      justify-content: center;
       align-self: center;
-      padding-left: 10px;
-      font-size: 14px;
-      font-weight: 100;
-      color: #A9A9A9
+      width: 80px;
+      height: 75px;
+      background: #EAF7FF;
+      border: 1px solid #B7E5FF;
+      box-sizing: border-box;
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      color: white;
+
+      &__icon {
+        align-self: center;
+        height: 24px;
+        width: 24px;
+      }
+      
+      &:hover {
+        cursor: pointer;
+        background-color: hsla(0, 0%, 100%, 0.32);
+      }
     }
   }
 }

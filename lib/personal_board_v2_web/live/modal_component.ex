@@ -39,8 +39,8 @@ defmodule PersonalBoardV2Web.ModalComponent do
           <div class="modal__header" phx-click="show_board_composer" phx-value-should_show="true">
             <h2 class="modal__title"><%= @title %></h2>
               <%= live_patch to: @return_to, class: "modal__close-trigger" do %>
-              <%= raw svg_icon("icon-x") %>
-              <span class="hidden">Close</span>
+                <%= icon_tag(@socket, "close", class: "modal__close--icon") %>
+                <span class="hidden">Close</span>
               <% end %>
           </div>
           <%= live_component @socket, @component, @opts %>
