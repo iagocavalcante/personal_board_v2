@@ -1,14 +1,14 @@
 defmodule PersonalBoardV2Web.BoardsLive do
   use PersonalBoardV2Web, :live_view
 
-  alias PersonalBoardV2.Actors.Card
-
   @topic "board_updates"
 
+  @impl true
   def render(assigns) do
     PersonalBoardV2Web.BoardView.render("board.html", assigns)
   end
 
+  @impl true
   def mount(_params, _session, socket) do
     Phoenix.PubSub.subscribe(PersonalBoardV2.PubSub, @topic)
 
@@ -30,26 +30,52 @@ defmodule PersonalBoardV2Web.BoardsLive do
   end
 
   @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  def handle_params(params, url, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params, url)}
   end
 
-  defp apply_action(socket, :new, _params) do
+  defp apply_action(socket, :new_list, params, url) do
+    board_id = params |> Map.get("board_id")
+    uri = URI.parse(url)
+    socket
+      |> assign(:page_title, gettext("Nova lista"))
+      |> assign(:list, %PersonalBoardV2.Actors.List{})
+      |> assign(:url, uri)
+      |> assign(:board_id, board_id)
+  end
+
+  defp apply_action(socket, :new_card, params, url) do
+    list_id = params |> Map.get("list_id")
+    uri = URI.parse(url)
+    socket
+      |> assign(:page_title, gettext("Novo Card"))
+      |> assign(:card, %PersonalBoardV2.Actors.Card{})
+      |> assign(:url, uri)
+      |> assign(:list_id, list_id)
+  end
+
+  defp apply_action(socket, :new, _params, url) do
+    uri = URI.parse(url)
     socket
     |> assign(:page_title, gettext("Novo Quadro"))
     |> assign(:board, %PersonalBoardV2.Actors.Board{})
+    |> assign(:url, uri)
   end
 
-  defp apply_action(socket, :index, _params) do
+  defp apply_action(socket, :index, _params, url) do
+    uri = URI.parse(url)
+    socket
+      |> assign(:page_title, gettext("Quadros"))
+      |> assign(:board, nil)
+      |> assign(:url, uri)
+  end
+
+  defp apply_action(socket, nil, _params, url) do
+    uri = URI.parse(url)
     socket
     |> assign(:page_title, gettext("Quadros"))
     |> assign(:board, nil)
-  end
-
-  defp apply_action(socket, nil, _params) do
-    socket
-    |> assign(:page_title, gettext("Quadros"))
-    |> assign(:board, nil)
+    |> assign(:url, uri)
   end
 
   def update_board_for_subscribers(board_id) do
@@ -61,6 +87,7 @@ defmodule PersonalBoardV2Web.BoardsLive do
     )
   end
 
+  @impl true
   def handle_event("show_boards", %{"should_show" => value}, socket) do
     case value do
       "true" -> {:noreply, assign(socket, show_boards: true)}
@@ -128,13 +155,6 @@ defmodule PersonalBoardV2Web.BoardsLive do
     end
   end
 
-  def handle_event("add_list", %{"list" => %{"title" => title, "board_id" => id}}, socket) do
-    PersonalBoardV2.List.create_list(%{"title" => title, "board_id" => id})
-
-    update_board_for_subscribers(socket.assigns.current_board.id)
-    {:noreply, assign(socket, lists: PersonalBoardV2.List.lists_for_board(id))}
-  end
-
   def handle_event("reorder_list", %{"list_id" => list_id, "to_position" => to_position}, socket) do
     list = PersonalBoardV2.List.get_list!(list_id)
 
@@ -166,15 +186,6 @@ defmodule PersonalBoardV2Web.BoardsLive do
 
     update_board_for_subscribers(socket.assigns.current_board.id)
     {:noreply, assign(socket, lists: current_lists(socket))}
-  end
-
-  def handle_event("add_card", %{"card" => %{"title" => title, "list_id" => list_id}}, socket) do
-    ## Make room at beginning of list, kind of a hack
-    PersonalBoardV2.Card.reorder_list_after_adding_card(%Card{list_id: list_id, position: -1})
-
-    PersonalBoardV2.Card.create_card(%{"title" => title, "list_id" => list_id, "position" => 0})
-    update_board_for_subscribers(socket.assigns.current_board.id)
-    {:noreply, assign(socket, lists: current_lists(socket), show_card_composer: 0)}
   end
 
   def handle_event("show_card_composer", %{"list_id" => list_id}, socket) do
@@ -235,6 +246,7 @@ defmodule PersonalBoardV2Web.BoardsLive do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_info({__MODULE__, {:update_board, board_id}}, socket) do
     if socket.assigns.current_board.id == board_id do
       {:noreply, assign(socket, lists: current_lists(socket))}

@@ -58,14 +58,6 @@
       <% end %>
     </div>
   </div>
-  <%= if @live_action in [:new, :edit] do %>
-    <%= live_modal @socket, PersonalBoardV2Web.AddBoardForm,
-      id: @board.id || :new,
-      title: "Create new board",
-      action: @live_action,
-      return_to: Routes.boards_path(@socket, :index)
-    %>
-  <% end %>
   <div class="wrapper">
     <div class="lists" phx-hook="Lists" id="lists" >
       <%= for list <- @lists do %>
@@ -93,48 +85,21 @@
                 %>
               <% end %>
             </div>
-            <%= if @show_card_composer == list.id do %>
-              <div class="card-composer">
-                <form action="#" phx-submit="add_card">
-                  <%= text_input :card, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
-                  <%= hidden_input :card, :list_id, value: list.id  %>
-                  <%= submit "Add Card", class: "primary" %>
-                  <div class="close-icon icons" phx-click="show_card_composer" phx-value-list_id="0">
-                    <i class="material-icons ">close</i>
-                  </div>
-                </form>
-              </div>
-            <% end %>
           </div>
-          <a href="#" class="list__card--add" phx-click="show_card_composer" phx-value-list_id="<%= list.id %>" >
+          <%= live_patch to: Routes.boards_path(@socket, :new_card, list_id: list.id), class: "list__card--add" do %>
             <%= icon_tag(@socket, "rounded-plus", class: "list__card--add__icon") %>
             <div class="add-text">Add another card</div>
-          </a>
+          <% end %>
         </div>
       <% end %>
     </div>
-    <%= if @show_list_composer == true do %>
-      <div class="list" id="0">
-        <div class="list__container">
-          <div class="card-composer">
-            <%= form_for :list, "#", [phx_submit: :add_list], fn f -> %>
-            <%= text_input f, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
-            <%= hidden_input f, :board_id, value: @current_board.id  %>
-            <%= submit "Add List", class: "primary" %>
-            <span class="close-icon icons" phx-click="show_list_composer" phx-value-should_show="false">
-              <i class="material-icons icons">close</i>
-            </span>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    <% else %>
-      <div class="add-list">
-        <div class="add-list__button" phx-click="show_list_composer" phx-value-should_show="true" >
+    <div class="add-list">
+      <%= live_patch to: Routes.boards_path(@socket, :new_list) do %>
+        <div class="add-list__button">
           <%= icon_tag(@socket, "plus", class: "add-list__button--icon") %>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 <%= if @show_list_actions == true do %>
@@ -154,4 +119,30 @@
       <div class="list-actions-item" phx-click="archive_list" phx-value-list_id="<%= @list_actions_list_id %>" >Archive List</div>
     </div>
   </div>
+<% end %>
+<%= if @live_action in [:new, :edit] && @url.path == "/boards/new" do %>
+  <%= live_modal @socket, PersonalBoardV2Web.AddBoardForm,
+    id: @board.id || :new,
+    title: "Create new board",
+    action: @live_action,
+    return_to: Routes.boards_path(@socket, :index)
+  %>
+<% end %>
+<%= if @live_action in [:new_card, :edit_card] && @url.path == "/cards/new" do %>
+  <%= live_modal @socket, PersonalBoardV2Web.AddCardForm,
+    id: :new_card,
+    list_id: @list_id,
+    title: "Create new card",
+    action: @live_action,
+    return_to: Routes.boards_path(@socket, :index)
+  %>
+<% end %>
+<%= if @live_action in [:new_list, :edit_list] && @url.path == "/lists/new" do %>
+  <%= live_modal @socket, PersonalBoardV2Web.AddListForm,
+    id: :new_list,
+    board_id: @current_board.id,
+    title: "Create new list",
+    action: @live_action,
+    return_to: Routes.boards_path(@socket, :index)
+  %>
 <% end %>

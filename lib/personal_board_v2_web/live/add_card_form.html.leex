@@ -1,0 +1,14 @@
+<%= f = form_for :card, "#",
+  id: "add-card-form",
+  phx_target: @myself,
+  phx_submit: "add_card" %>
+
+  <div class="modal__content">
+    <%= text_input f, :title, id: "new-card-name", class: "input card-name-input", autofocus: true %>
+    <%= hidden_input f, :list_id, value: @list_id %>
+  </div>
+  <div class="modal__footer">
+    <%= live_patch gettext("Cancelar"), to: "/", class: "button button--secondary sm:ml-auto" %>
+    <%= submit gettext("Salvar"), phx_disable_with: gettext("Salvando..."), class: "button button--primary" %>
+  </div>
+</form>

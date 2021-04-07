@@ -11,12 +11,11 @@ defmodule PersonalBoardV2Web.AddBoardForm do
   end
 
   def handle_event("add_board", %{"board" => %{"title" => title}}, socket) do
-    IO.inspect(socket)
     case PersonalBoardV2.Board.create_board(%{"title" => title}) do
       {:ok, board} ->
         {:noreply,
            socket
-           |> put_flash(:info, gettext("Episódio salvo com sucesso."))
+           |> put_flash(:info, gettext("Quadro salvo com sucesso."))
            |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, error} ->

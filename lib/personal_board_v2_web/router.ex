@@ -22,6 +22,10 @@ defmodule PersonalBoardV2Web.Router do
     live "/", BoardsLive, :index
     live "/boards/new", BoardsLive, :new
     live "/boards/:id/edit", BoardsLive, :edit
+    live "/cards/new", BoardsLive, :new_card
+    live "/cards/:id/edit", BoardsLive, :edit_card
+    live "/lists/new", BoardsLive, :new_list
+    live "/lists/:id/edit", BoardsLive, :edit_list
   end
 
   scope "/admin" do

@@ -102,16 +102,6 @@
       }
     }
     
-    
-    
-    .add-list {
-      padding: 6px 8px;
-      color: hsla(0, 0%, 100%, 0.8);
-      transition: color 85ms ease-in;
-      align-items: center;
-      display: flex;;
-    }
-    
     .add-list-text {
       margin-top: 3px;
     }
@@ -248,6 +238,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 50px;
 
     &__button {
       width: 106px;
