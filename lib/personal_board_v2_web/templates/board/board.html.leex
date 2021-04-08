@@ -14,6 +14,8 @@
     </div>
 
     <div class="board__header--logged-in">
+      <img class="board__header--logged-in__avatar" src="<%= @current_user.avatar %>" />
+      <p class="board__header--logged-in__name"><%= @current_user.name %></p>
       <%= icon_tag(@socket, "logged-in", class: "board__header--logged-in__icon") %>
     </div>
   </div>
