@@ -14,7 +14,6 @@ defmodule PersonalBoardV2Web.BoardsLive do
 
     current_board = PersonalBoardV2.Board.get_board!(current_user.id)
 
-    IO.inspect(current_board)
     if current_board do
       lists = PersonalBoardV2.List.lists_for_board(current_board.id)
     else
@@ -23,15 +22,12 @@ defmodule PersonalBoardV2Web.BoardsLive do
 
     {:ok,
      assign(socket,
-       lists: (if current_board, do: PersonalBoardV2.List.lists_for_board(current_board.id), else: []),
+       lists:
+         if(current_board, do: PersonalBoardV2.List.lists_for_board(current_board.id), else: []),
        current_board: current_board,
        current_user: current_user,
-       boards: (if current_board, do: boards_to_select(current_board), else: []),
-       show_boards: false,
-       show_board_composer: false,
-       show_card_composer: 0,
+       boards: if(current_board, do: boards_to_select(current_board, current_user.id), else: []),
        show_list_actions: false,
-       show_list_composer: false,
        edit_list_title: 0,
        edit_card_title: 0
      )}
@@ -100,23 +96,15 @@ defmodule PersonalBoardV2Web.BoardsLive do
     )
   end
 
-  @impl true
-  def handle_event("show_boards", %{"should_show" => value}, socket) do
-    case value do
-      "true" -> {:noreply, assign(socket, show_boards: true)}
-      "false" -> {:noreply, assign(socket, show_boards: false)}
-    end
-  end
-
-  def handle_event("set_current_board", %{"board_id" => id}, socket) do
-    board = PersonalBoardV2.Board.get_board_by_id!(id)
+  def handle_event("set_current_board", %{"board_id" => id, "user_id" => user_id}, socket) do
+    board = PersonalBoardV2.Board.get_board_by_id!(id, user_id)
+    lists = PersonalBoardV2.List.lists_for_board(board.id)
 
     {:noreply,
      assign(socket,
        current_board: board,
-       boards: boards_to_select(board),
-       show_boards: false,
-       lists: PersonalBoardV2.List.lists_for_board(board.id)
+       boards: boards_to_select(board, user_id),
+       lists: lists
      )}
   end
 
@@ -134,38 +122,8 @@ defmodule PersonalBoardV2Web.BoardsLive do
      )}
   end
 
-  def handle_event("show_board_composer", %{"should_show" => value}, socket) do
-    case value do
-      "true" -> {:noreply, assign(socket, show_board_composer: true)}
-      "false" -> {:noreply, assign(socket, show_board_composer: false)}
-    end
-  end
-
-  def handle_event("add_board", %{"board" => %{"title" => title}}, socket) do
-    case PersonalBoardV2.Board.create_board(%{"title" => title}) do
-      {:ok, board} ->
-        {:noreply,
-         assign(socket,
-           lists: PersonalBoardV2.List.lists_for_board(board.id),
-           current_board: board,
-           boards: boards_to_select(board),
-           show_board_composer: 0
-         )}
-
-      {:error, error} ->
-        IO.inspect(error.errors)
-    end
-  end
-
   def handle_event("show_list_actions", %{"should_show" => "false"}, socket) do
     {:noreply, assign(socket, show_list_actions: false)}
-  end
-
-  def handle_event("show_list_composer", %{"should_show" => value}, socket) do
-    case value do
-      "true" -> {:noreply, assign(socket, show_list_composer: true)}
-      "false" -> {:noreply, assign(socket, show_list_composer: false)}
-    end
   end
 
   def handle_event("reorder_list", %{"list_id" => list_id, "to_position" => to_position}, socket) do
@@ -199,11 +157,6 @@ defmodule PersonalBoardV2Web.BoardsLive do
 
     update_board_for_subscribers(socket.assigns.current_board.id)
     {:noreply, assign(socket, lists: current_lists(socket))}
-  end
-
-  def handle_event("show_card_composer", %{"list_id" => list_id}, socket) do
-    {:noreply,
-     assign(socket, show_list_actions: false, show_card_composer: String.to_integer(list_id))}
   end
 
   def handle_event("edit_list_title", %{"list_id" => list_id}, socket) do
@@ -248,7 +201,10 @@ defmodule PersonalBoardV2Web.BoardsLive do
     end)
 
     {:noreply,
-     assign(socket, lists: PersonalBoardV2.List.lists_for_board(1), show_card_composer: 0)}
+     assign(socket,
+       lists: PersonalBoardV2.List.lists_for_board(@socket.assigns.current_board.id),
+       show_card_composer: 0
+     )}
   end
 
   # For debugging purposes
@@ -274,8 +230,8 @@ defmodule PersonalBoardV2Web.BoardsLive do
     {:noreply, socket}
   end
 
-  def boards_to_select(current_board) do
-    PersonalBoardV2.Board.list_boards()
+  def boards_to_select(current_board, user_id) do
+    PersonalBoardV2.Board.list_boards(user_id)
     |> Enum.filter(fn board -> board.id != current_board.id end)
   end
 

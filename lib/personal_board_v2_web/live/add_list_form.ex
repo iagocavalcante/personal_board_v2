@@ -3,7 +3,6 @@ defmodule PersonalBoardV2Web.AddListForm do
   LiveView Component to display a form for create board.
   """
   use PersonalBoardV2Web, :live_component
-  alias PersonalBoardV2.Actors.Card
 
   def mount(_session, socket) do
     {:ok, assign(socket, :list)}
@@ -11,7 +10,7 @@ defmodule PersonalBoardV2Web.AddListForm do
 
   def handle_event("add_list", %{"list" => %{"title" => title, "board_id" => board_id}}, socket) do
     case PersonalBoardV2.List.create_list(%{"title" => title, "board_id" => board_id}) do
-      {:ok, list} ->
+      {:ok, _ist} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Lista salva com sucesso."))

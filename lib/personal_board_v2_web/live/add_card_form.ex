@@ -18,7 +18,7 @@ defmodule PersonalBoardV2Web.AddCardForm do
            "list_id" => list_id,
            "position" => 0
          }) do
-      {:ok, board} ->
+      {:ok, _card} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Cartão salvo com sucesso."))

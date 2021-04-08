@@ -35,7 +35,7 @@
           </div>
         </div>
         <%= for %{id: id, title: title, inserted_at: inserted_at} <- @boards do %>
-          <div class="board board--inactive" phx-click="set_current_board" phx-value-board_id="<%= id %>">
+          <div class="board board--inactive" phx-click="set_current_board" phx-value-board_id="<%= id %>" phx-value-user_id="<%= @current_user.id %>">
             <div class="board__avatar">
             </div>
             <div class="board__info">

@@ -4,11 +4,24 @@ defmodule PersonalBoardV2.Board do
 
   alias PersonalBoardV2.Actors.Board
 
-  def list_boards do
-    Repo.all(Board)
+  def list_boards(user_id) do
+    query =
+      from PersonalBoardV2.Actors.Board,
+        where: [user_id: ^user_id]
+
+    query
+    |> Repo.all()
   end
 
-  def get_board_by_id!(id), do: Repo.get!(Board, id)
+  def get_board_by_id!(id, user_id) do
+    query =
+      from PersonalBoardV2.Actors.Board,
+        where: [user_id: ^user_id],
+        where: [id: ^id]
+
+    query
+    |> Repo.one()
+  end
 
   def get_board!(user_id) do
     query =
@@ -17,7 +30,7 @@ defmodule PersonalBoardV2.Board do
         limit: 1
 
     query
-      |> Repo.one()
+    |> Repo.one()
   end
 
   def create_board(attrs \\ %{}) do
