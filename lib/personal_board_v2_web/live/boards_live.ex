@@ -26,7 +26,7 @@ defmodule PersonalBoardV2Web.BoardsLive do
        lists: (if current_board, do: PersonalBoardV2.List.lists_for_board(current_board.id), else: []),
        current_board: current_board,
        current_user: current_user,
-       boards: boards_to_select(current_board),
+       boards: (if current_board, do: boards_to_select(current_board), else: []),
        show_boards: false,
        show_board_composer: false,
        show_card_composer: 0,
