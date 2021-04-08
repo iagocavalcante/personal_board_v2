@@ -12,7 +12,7 @@ config :personal_board_v2,
 
 # Configures the endpoint
 config :personal_board_v2, PersonalBoardV2Web.Endpoint,
-  url: [host: "personal-board.herokuapp.com"],
+  url: [host: "personal-board.iagocavalcante.dev"],
   secret_key_base: "pzX6jX2fJRjHBy9JhGJp+bHRjoritI4TeWGR0cTCmFOt6thqPxaoa2QziSa1QFAl",
   render_errors: [view: PersonalBoardV2Web.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: PersonalBoardV2.PubSub,

@@ -11,7 +11,7 @@ use Mix.Config
 # before starting your production server.
 config :personal_board_v2, PersonalBoardV2Web.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [scheme: "https", host: "personal-board.herokuapp.com", port: 443],
+  url: [scheme: "https", host: "personal-board.iagocavalcante.dev", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # Do not print debug messages in production
