@@ -24,6 +24,13 @@ defmodule PersonalBoardV2Web.Router do
   end
 
   scope "/", PersonalBoardV2Web do
+    pipe_through :browser
+    get "/politicas-privacidade", PageController, :policy
+    get "/termos-uso", PageController, :terms
+
+  end
+
+  scope "/", PersonalBoardV2Web do
     pipe_through [:browser, :require_authenticated_user]
 
     live "/boards", BoardsLive, :index
