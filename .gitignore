@@ -36,3 +36,7 @@ npm-debug.log
 .DS_Store
 
 .env
+
+ca_bundle.crt
+certificate.crt
+private.key
