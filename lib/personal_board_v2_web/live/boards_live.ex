@@ -13,11 +13,17 @@ defmodule PersonalBoardV2Web.BoardsLive do
     Phoenix.PubSub.subscribe(PersonalBoardV2.PubSub, @topic)
 
     current_board = PersonalBoardV2.Board.get_board!(current_user.id)
-    lists = PersonalBoardV2.List.lists_for_board(current_board.id)
+
+    IO.inspect(current_board)
+    if current_board do
+      lists = PersonalBoardV2.List.lists_for_board(current_board.id)
+    else
+      lists = []
+    end
 
     {:ok,
      assign(socket,
-       lists: lists,
+       lists: (if current_board, do: PersonalBoardV2.List.lists_for_board(current_board.id), else: []),
        current_board: current_board,
        current_user: current_user,
        boards: boards_to_select(current_board),
