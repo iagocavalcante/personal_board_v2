@@ -5,6 +5,7 @@
 
   <div class="modal__content">
     <%= text_input f, :title, id: "new-list-name", class: "input list-name-input", autofocus: true %>
+    <%= hidden_input f, :user_id, value: @user_id %>
   </div>
   <div class="modal__footer">
     <%= live_patch gettext("Cancelar"), to: "/", class: "button button--secondary sm:ml-auto" %>

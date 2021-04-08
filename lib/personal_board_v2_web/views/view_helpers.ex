@@ -17,7 +17,6 @@ defmodule PersonalBoardV2Web.ViewHelpers do
     seconds |> Timex.Duration.from_seconds() |> Timex.Duration.to_time!()
   end
 
-
   def icon_tag(socket, name, opts \\ []) do
     classes = Keyword.get(opts, :class, "") <> " icon"
 

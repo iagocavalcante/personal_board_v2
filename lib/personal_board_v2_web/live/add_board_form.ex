@@ -10,13 +10,13 @@ defmodule PersonalBoardV2Web.AddBoardForm do
     {:ok, assign(socket, :board, %{})}
   end
 
-  def handle_event("add_board", %{"board" => %{"title" => title}}, socket) do
-    case PersonalBoardV2.Board.create_board(%{"title" => title}) do
+  def handle_event("add_board", %{"board" => %{"title" => title, "user_id" => user_id}}, socket) do
+    case PersonalBoardV2.Board.create_board(%{"title" => title, "user_id" => user_id}) do
       {:ok, board} ->
         {:noreply,
-           socket
-           |> put_flash(:info, gettext("Quadro salvo com sucesso."))
-           |> push_redirect(to: socket.assigns.return_to)}
+         socket
+          |> put_flash(:info, gettext("Quadro salvo com sucesso."))
+          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, error} ->
         IO.inspect(error.errors)

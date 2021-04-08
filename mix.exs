@@ -46,7 +46,10 @@ defmodule PersonalBoardV2.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ueberauth_facebook, "~> 0.8"},
+      {:ueberauth_google, "~> 0.10"},
+      {:ueberauth_github, "~> 0.7"}
     ]
   end
 

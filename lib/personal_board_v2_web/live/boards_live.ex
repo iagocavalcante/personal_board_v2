@@ -9,15 +9,17 @@ defmodule PersonalBoardV2Web.BoardsLive do
   end
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, %{"current_user" => current_user} = _session, socket) do
     Phoenix.PubSub.subscribe(PersonalBoardV2.PubSub, @topic)
 
-    current_board = PersonalBoardV2.Board.get_board!(1)
+    current_board = PersonalBoardV2.Board.get_board!(current_user.id)
+    lists = PersonalBoardV2.List.lists_for_board(current_board.id)
 
     {:ok,
      assign(socket,
-       lists: PersonalBoardV2.List.lists_for_board(1),
+       lists: lists,
        current_board: current_board,
+       current_user: current_user,
        boards: boards_to_select(current_board),
        show_boards: false,
        show_board_composer: false,
@@ -37,25 +39,28 @@ defmodule PersonalBoardV2Web.BoardsLive do
   defp apply_action(socket, :new_list, params, url) do
     board_id = params |> Map.get("board_id")
     uri = URI.parse(url)
+
     socket
-      |> assign(:page_title, gettext("Nova lista"))
-      |> assign(:list, %PersonalBoardV2.Actors.List{})
-      |> assign(:url, uri)
-      |> assign(:board_id, board_id)
+    |> assign(:page_title, gettext("Nova lista"))
+    |> assign(:list, %PersonalBoardV2.Actors.List{})
+    |> assign(:url, uri)
+    |> assign(:board_id, board_id)
   end
 
   defp apply_action(socket, :new_card, params, url) do
     list_id = params |> Map.get("list_id")
     uri = URI.parse(url)
+
     socket
-      |> assign(:page_title, gettext("Novo Card"))
-      |> assign(:card, %PersonalBoardV2.Actors.Card{})
-      |> assign(:url, uri)
-      |> assign(:list_id, list_id)
+    |> assign(:page_title, gettext("Novo Card"))
+    |> assign(:card, %PersonalBoardV2.Actors.Card{})
+    |> assign(:url, uri)
+    |> assign(:list_id, list_id)
   end
 
   defp apply_action(socket, :new, _params, url) do
     uri = URI.parse(url)
+
     socket
     |> assign(:page_title, gettext("Novo Quadro"))
     |> assign(:board, %PersonalBoardV2.Actors.Board{})
@@ -64,14 +69,16 @@ defmodule PersonalBoardV2Web.BoardsLive do
 
   defp apply_action(socket, :index, _params, url) do
     uri = URI.parse(url)
+
     socket
-      |> assign(:page_title, gettext("Quadros"))
-      |> assign(:board, nil)
-      |> assign(:url, uri)
+    |> assign(:page_title, gettext("Quadros"))
+    |> assign(:board, nil)
+    |> assign(:url, uri)
   end
 
   defp apply_action(socket, nil, _params, url) do
     uri = URI.parse(url)
+
     socket
     |> assign(:page_title, gettext("Quadros"))
     |> assign(:board, nil)
@@ -96,7 +103,7 @@ defmodule PersonalBoardV2Web.BoardsLive do
   end
 
   def handle_event("set_current_board", %{"board_id" => id}, socket) do
-    board = PersonalBoardV2.Board.get_board!(id)
+    board = PersonalBoardV2.Board.get_board_by_id!(id)
 
     {:noreply,
      assign(socket,

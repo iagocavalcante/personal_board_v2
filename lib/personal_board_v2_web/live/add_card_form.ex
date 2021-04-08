@@ -12,12 +12,17 @@ defmodule PersonalBoardV2Web.AddCardForm do
   def handle_event("add_card", %{"card" => %{"title" => title, "list_id" => list_id}}, socket) do
     ## Make room at beginning of list, kind of a hack
     PersonalBoardV2.Card.reorder_list_after_adding_card(%Card{list_id: list_id, position: -1})
-    case PersonalBoardV2.Card.create_card(%{"title" => title, "list_id" => list_id, "position" => 0}) do
+
+    case PersonalBoardV2.Card.create_card(%{
+           "title" => title,
+           "list_id" => list_id,
+           "position" => 0
+         }) do
       {:ok, board} ->
         {:noreply,
-          socket
-           |> put_flash(:info, gettext("Cartão salvo com sucesso."))
-           |> push_redirect(to: socket.assigns.return_to)}
+         socket
+         |> put_flash(:info, gettext("Cartão salvo com sucesso."))
+         |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, error} ->
         IO.inspect(error.errors)

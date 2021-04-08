@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   <div class="board__header">
     <div class="board__header--search">
       <%= icon_tag(@socket, "search", class: "board__header--search__icon") %>
@@ -19,27 +19,13 @@
   </div>
   <div class="boards">
     <div class="boards__container" >
-      <div class="board">
-        <div class="board__avatar">
-        </div>
-        <div class="board__info">
-          <p class="board__info--title"><%= @current_board.title %></p>
-          <p class="board__info--subtitle"><%= @current_board.title %></p>
-        </div>
-        <div class="board__badge">
-          <p class="board__badge--icon">
-            <%= icon_tag(@socket, "locker", class: "board__badge--icon-locker") %>
-          </p>
-          <p class="board__badge--title">Private</p>
-        </div>
-      </div>
-      <%= for %{id: id, title: title} <- @boards do %>
-        <div class="board board--inactive" phx-click="set_current_board" phx-value-board_id="<%= id %>">
+      <%= if !is_nil(@current_board) do %>
+        <div class="board">
           <div class="board__avatar">
           </div>
           <div class="board__info">
-            <p class="board__info--title"><%= title %></p>
-            <p class="board__info--subtitle"><%= title %></p>
+            <p class="board__info--title"><%= @current_board.title %></p>
+            <p class="board__info--subtitle"><%= @current_board.inserted_at %></p>
           </div>
           <div class="board__badge">
             <p class="board__badge--icon">
@@ -48,6 +34,25 @@
             <p class="board__badge--title">Private</p>
           </div>
         </div>
+        <%= for %{id: id, title: title, inserted_at: inserted_at} <- @boards do %>
+          <div class="board board--inactive" phx-click="set_current_board" phx-value-board_id="<%= id %>">
+            <div class="board__avatar">
+            </div>
+            <div class="board__info">
+              <p class="board__info--title"><%= title %></p>
+              <p class="board__info--subtitle"><%= inserted_at %></p>
+            </div>
+            <div class="board__badge">
+              <p class="board__badge--icon">
+                <%= icon_tag(@socket, "locker", class: "board__badge--icon-locker") %>
+              </p>
+              <p class="board__badge--title">Private</p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+      <%= if is_nil(@current_board) do %>
+        <h5 class="text-black">No boards yet</h5>
       <% end %>
     </div>
     <div class="boards__button">
@@ -124,6 +129,7 @@
   <%= live_modal @socket, PersonalBoardV2Web.AddBoardForm,
     id: @board.id || :new,
     title: "Create new board",
+    user_id: @current_user.id,
     action: @live_action,
     return_to: Routes.boards_path(@socket, :index)
   %>

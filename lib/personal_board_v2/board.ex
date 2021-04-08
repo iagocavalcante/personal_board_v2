@@ -8,7 +8,17 @@ defmodule PersonalBoardV2.Board do
     Repo.all(Board)
   end
 
-  def get_board!(id), do: Repo.get!(Board, id)
+  def get_board_by_id!(id), do: Repo.get!(Board, id)
+
+  def get_board!(user_id) do
+    query =
+      from PersonalBoardV2.Actors.Board,
+        where: [user_id: ^user_id],
+        limit: 1
+
+    query
+      |> Repo.one()
+  end
 
   def create_board(attrs \\ %{}) do
     %Board{}

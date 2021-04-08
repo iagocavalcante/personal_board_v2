@@ -2,12 +2,13 @@ defmodule PersonalBoardV2Web.Router do
   alias PersonalBoardV2Web.BoardController
   alias PersonalBoardV2Web.ListController
   use PersonalBoardV2Web, :router
+  import PersonalBoardV2Web.UserAuth
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {PersonalBoardV2Web.LayoutView, :app}
+    plug :put_root_layout, {PersonalBoardV2Web.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -17,9 +18,15 @@ defmodule PersonalBoardV2Web.Router do
   end
 
   scope "/", PersonalBoardV2Web do
-    pipe_through :browser
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    live "/", BoardsLive, :index
+    get "/", PageController, :index
+  end
+
+  scope "/", PersonalBoardV2Web do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live "/boards", BoardsLive, :index
     live "/boards/new", BoardsLive, :new
     live "/boards/:id/edit", BoardsLive, :edit
     live "/cards/new", BoardsLive, :new_card
@@ -28,8 +35,17 @@ defmodule PersonalBoardV2Web.Router do
     live "/lists/:id/edit", BoardsLive, :edit_list
   end
 
+  scope "/auth", PersonalBoardV2Web do
+    pipe_through [:browser]
+
+    get("/:provider", AuthController, :request)
+    get("/:provider/callback", AuthController, :callback)
+    post("/:provider/callback", AuthController, :callback)
+    post("/logout", AuthController, :delete)
+  end
+
   scope "/admin" do
-    pipe_through :browser
+    pipe_through [:browser, :require_authenticated_user]
 
     resources "/boards", BoardController
     resources "/lists", ListController

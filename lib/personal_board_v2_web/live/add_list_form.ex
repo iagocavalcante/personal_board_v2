@@ -13,9 +13,9 @@ defmodule PersonalBoardV2Web.AddListForm do
     case PersonalBoardV2.List.create_list(%{"title" => title, "board_id" => board_id}) do
       {:ok, list} ->
         {:noreply,
-          socket
-           |> put_flash(:info, gettext("Lista salva com sucesso."))
-           |> push_redirect(to: socket.assigns.return_to)}
+         socket
+         |> put_flash(:info, gettext("Lista salva com sucesso."))
+         |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, error} ->
         IO.inspect(error.errors)
