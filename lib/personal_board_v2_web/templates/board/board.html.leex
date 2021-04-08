@@ -148,7 +148,7 @@
 <%= if @live_action in [:new_list, :edit_list] && @url.path == "/lists/new" do %>
   <%= live_modal @socket, PersonalBoardV2Web.AddListForm,
     id: :new_list,
-    board_id: @current_board.id,
+    board_id: (if is_nil(@current_board), do: nil, else: @current_board.id),
     title: "Create new list",
     action: @live_action,
     return_to: Routes.boards_path(@socket, :index)
