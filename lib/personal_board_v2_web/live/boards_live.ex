@@ -202,7 +202,7 @@ defmodule PersonalBoardV2Web.BoardsLive do
 
     {:noreply,
      assign(socket,
-       lists: PersonalBoardV2.List.lists_for_board(@socket.assigns.current_board.id),
+       lists: PersonalBoardV2.List.lists_for_board(socket.assigns.current_board.id),
        show_card_composer: 0
      )}
   end

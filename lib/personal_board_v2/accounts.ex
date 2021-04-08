@@ -57,7 +57,7 @@ defmodule PersonalBoardV2.Accounts do
     case auth.strategy do
       Ueberauth.Strategy.Facebook ->
         %{
-          uid: Kernel.inspect(auth.uid),
+          uid: auth.uid,
           name: name_from_auth(auth),
           email: email,
           avatar: avatar_from_auth(auth),
